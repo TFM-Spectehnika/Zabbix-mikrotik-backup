@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>6.0</version>
+    <date>2024-03-17T11:46:36Z</date>
+    <groups>
+        <group>
+            <uuid>53fc1665c4e14389bb5711c00521dd1a</uuid>
+            <name>2. Switch</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <uuid>3e303de725c04ba2a802f064a1a20f10</uuid>
+            <template>BackUP Mikrotik</template>
+            <name>BackUP Mikrotik</name>
+            <description>Template to backup mikrotik RouterOS
+
+In macro must set username and password
+
+In mikrotik must set below command
+/user group
+add name=user_name policy=ssh,ftp,read,write,policy,test,sniff,sensitive,!local,!reboot,!winbox,!password,!web,!api,!romon,!dude,!tikapp
+/user
+add name=backup password=&quot;password&quot; group=backup
+/ip service
+enable ssh
+set ssh address=address_zabbix_server or service vlan</description>
+            <groups>
+                <group>
+                    <name>2. Switch</name>
+                </group>
+            </groups>
+            <items>
+                <item>
+                    <uuid>1ce8a884aa2443c9b427df9cc2c46b37</uuid>
+                    <name>BackUP</name>
+                    <type>EXTERNAL</type>
+                    <key>backup_mikrotik.sh[{HOST.IP},{$MIK_USER},{$MIK_PASSWORD},{$BACK_USER},{$BACK_PASSWORD}]</key>
+                    <delay>1d</delay>
+                    <history>0</history>
+                    <trends>0</trends>
+                </item>
+            </items>
+            <tags>
+                <tag>
+                    <tag>class</tag>
+                    <value>network</value>
+                </tag>
+                <tag>
+                    <tag>target</tag>
+                    <value>mikrotik</value>
+                </tag>
+            </tags>
+            <macros>
+                <macro>
+                    <macro>{$BACK_PASSWORD}</macro>
+                    <value>change_it</value>
+                    <description>Password for destination (must be set in destination host)</description>
+                </macro>
+                <macro>
+                    <macro>{$BACK_USER}</macro>
+                    <value>change_it</value>
+                    <description>Username for destination (mst be added in destination host)</description>
+                </macro>
+                <macro>
+                    <macro>{$MIK_PASSWORD}</macro>
+                    <value>change_it</value>
+                    <description>Password for mikrotik (must be set in user for backup)</description>
+                </macro>
+                <macro>
+                    <macro>{$MIK_USER}</macro>
+                    <value>change_it</value>
+                    <description>Username for mikrotik (mst be added in host)</description>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
